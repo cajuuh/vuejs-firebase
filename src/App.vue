@@ -5,6 +5,28 @@
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">
+        <h3>Adicionar Livro</h3>
+      </div>
+      <div class="panel-body">
+        <form id="form" class="form-inline" v-on:submit.prevent="adicionaLivro">
+          <div class="form-group">
+            <label for="títuloLivro">Título:</label>
+            <input type="text" id="títuloLivro" class="form-control" v-model="novoLivro.título"/>
+          </div>
+          <div class="form-group">
+            <label for="autorLivro">Autor:</label>
+            <input type="text" id="autroLivro" class="form-control" v-model="novoLivro.autor"/>
+          </div>
+          <div class="form-group">
+            <label for="urlLivro">URL:</label>
+            <input type="text" id="urlLivro" class="form-control" v-model="novoLivro.url"/>
+          </div>
+          <input type="submit" class="btn btn-primary" value="Adiciona Livro" />
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
         <h3>Lista de Livros</h3>
       </div>
       <div class="panel-body">
@@ -17,6 +39,9 @@
               <th>
                 Autor
               </th>
+              <th>
+                Apagar
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -26,6 +51,9 @@
               </td>
               <td>
                 {{livro.autor}}
+              </td>
+              <td>
+                <span class="glyphicon glyphicon-trash" v-on:click="removeLivro(livro)"></span>
               </td>
             </tr>
           </tbody>
@@ -61,12 +89,23 @@ export default {
   },
   data (){
     return{
-      novoLivro{
+      novoLivro:{
         título: '',
         autor: '',
         url:''
       }
     }
+  },
+  methods:{
+      adicionaLivro: function(){
+      livrosRef.push(this.novoLivro);
+      this.novoLivro.título = '';
+      this.novoLivro.autor = '';
+      this.novoLivro.url = '';
+    },
+      removeLivro: function(livro){
+        livrosRef.child(livro['.key']).remove();
+      }
   }
 }
 </script>
